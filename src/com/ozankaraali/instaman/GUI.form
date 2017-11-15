@@ -14,7 +14,10 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+          <toolTipText value=""/>
+        </properties>
       </component>
       <component id="dea8c" class="javax.swing.JButton" binding="loginButton" default-binding="true">
         <constraints>

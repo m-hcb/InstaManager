@@ -4,8 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -37,7 +35,6 @@ public class GUI {
         JFrame frame = new JFrame("Instagram Manager");
         GUI gui = new GUI();
         Instaman instaman = new Instaman();
-
 
         gui.loginButton.addActionListener(e->{
                 instaman.setPassword(new String(gui.password.getPassword()));
@@ -114,6 +111,7 @@ public class GUI {
         frame.pack();
         frame.setSize(580, 720);
         frame.setVisible(true);
+        frame.getRootPane().setDefaultButton(gui.loginButton);
 
     }
 
