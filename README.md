@@ -4,6 +4,9 @@ This program shows instagram followers and followings in lists to manage it and 
 ## Terms of Service
 Do not use this software for marketing purposes, send spam or commit crimes.
 
+## Downloads
+You can download the latest version (here)[https://github.com/ozankaraali/InstaManager/releases]
+
 ## License
 MIT License
 Copyright (c) 2017 Ozan Karaali
