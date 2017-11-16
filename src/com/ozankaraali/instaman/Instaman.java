@@ -1,10 +1,7 @@
 package com.ozankaraali.instaman;
 
 import org.brunocvcunha.instagram4j.Instagram4j;
-import org.brunocvcunha.instagram4j.requests.InstagramGetUserFollowersRequest;
-import org.brunocvcunha.instagram4j.requests.InstagramGetUserFollowingRequest;
-import org.brunocvcunha.instagram4j.requests.InstagramSearchUsernameRequest;
-import org.brunocvcunha.instagram4j.requests.InstagramUnfollowRequest;
+import org.brunocvcunha.instagram4j.requests.*;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramGetUserFollowersResult;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramSearchUsernameResult;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramUser;
@@ -50,6 +47,14 @@ public class Instaman {
         }
         try {
             instagram.login();
+            refreshResult();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshResult(){
+        try {
             userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(sneakUsername));
             userasd = userResult.getUser();
         } catch (IOException e) {
@@ -152,6 +157,12 @@ public class Instaman {
         instagram.sendRequest(new InstagramUnfollowRequest(userasd.getPk()));}catch (Exception e){}
     }
 
+    public void followRequest(String username){try{
+        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
+        userasd = userResult.getUser();
+        instagram.sendRequest(new InstagramFollowRequest(userasd.getPk()));}catch (Exception e){}
+    }
+
     public String getProfilePic(String username){try{
         userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
         userasd = userResult.getUser();}catch (Exception e){}
@@ -192,4 +203,7 @@ public class Instaman {
         return null;
     }
 
+    public boolean isLoggedin(){
+        return instagram.isLoggedIn();
+    }
 }

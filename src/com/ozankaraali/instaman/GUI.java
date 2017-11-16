@@ -40,17 +40,26 @@ public class GUI {
         GUI gui = new GUI();
         Instaman instaman = new Instaman();
 
-        gui.sneakCheck.addItemListener(l->{
+        gui.sneakCheck.addItemListener(l -> {
             if(gui.sneakCheck.isSelected()){
                 gui.sneakPeek.setEnabled(true);
-            }else{
+                      gui.unfBtn.setText("Follow from YOUR account");
+                     gui.fansBtn.setText("Follow from YOUR account");
+                gui.followingBtn.setText("Follow from YOUR account");
+                gui.followersBtn.setText("Follow from YOUR account");
+            }
+            else{
                 gui.sneakPeek.setEnabled(false);
                 instaman.setSneakUsername(null);
                 gui.sneakPeek.setText("");
+                      gui.unfBtn.setText("Unfollow");
+                     gui.fansBtn.setText("Follow");
+                gui.followingBtn.setText("Unollow");
+                gui.followersBtn.setText("Follow");
             }
         });
 
-        gui.loginButton.addActionListener(e->{
+        gui.loginButton.addActionListener(e -> {
             gui.statusText.setText("Logging in and loading, please wait...");
 
             try {
@@ -59,10 +68,16 @@ public class GUI {
                 e1.printStackTrace();
             }
             try{
-                instaman.setPassword(new String(gui.password.getPassword()));
-                instaman.setUsername(gui.username.getText());
-                instaman.setSneakUsername(gui.sneakPeek.getText());
-                instaman.builder();
+                if(!instaman.isLoggedin()){
+                    instaman.setPassword(new String(gui.password.getPassword()));
+                    instaman.setUsername(gui.username.getText());
+                    instaman.setSneakUsername(gui.sneakPeek.getText());
+                    instaman.builder();
+                }
+                else{
+                    instaman.setSneakUsername(gui.sneakPeek.getText());
+                    instaman.refreshResult();
+                }
 
 
                 DefaultListModel<String> followersModel = new DefaultListModel<>();
@@ -96,14 +111,49 @@ public class GUI {
 
             });
 
-        gui.unfBtn.addActionListener(e->{
+        gui.unfBtn.addActionListener(e ->{
+            if(!gui.sneakCheck.isSelected()){
                 instaman.unfollowRequest(gui.unfList.getSelectedValue().toString());
                 DefaultListModel modify = (DefaultListModel) gui.unfList.getModel();
                 modify.remove(gui.unfList.getSelectedIndex());
                 gui.unfList.setModel(modify);
-            });
+            }
+            else {
+                instaman.followRequest(gui.unfList.getSelectedValue().toString());
+            }
+        });
+        gui.followersBtn.addActionListener(e -> {
+            if(!gui.sneakCheck.isSelected()) {
+                instaman.followRequest(gui.followersList.getSelectedValue().toString());
+            }
+            else {
+                instaman.followRequest(gui.followersList.getSelectedValue().toString());
+            }
+        });
+        gui.followingBtn.addActionListener(e -> {
+            if(!gui.sneakCheck.isSelected()) {
+                instaman.unfollowRequest(gui.followingList.getSelectedValue().toString());
+                DefaultListModel modify = (DefaultListModel) gui.followingList.getModel();
+                modify.remove(gui.unfList.getSelectedIndex());
+                gui.followingList.setModel(modify);
+            }
+            else {
+                instaman.followRequest(gui.followingList.getSelectedValue().toString());
+            }
+        });
+        gui.fansBtn.addActionListener(e -> {
+            if(!gui.sneakCheck.isSelected()){
+                instaman.followRequest(gui.fansList.getSelectedValue().toString());
+                DefaultListModel modify = (DefaultListModel) gui.fansList.getModel();
+                modify.remove(gui.fansList.getSelectedIndex());
+                gui.fansList.setModel(modify);
+            }
+            else{
+                instaman.followRequest(gui.fansList.getSelectedValue().toString());
+            }
+        });
 
-        gui.ppQueryBtn.addActionListener(e->{
+        gui.ppQueryBtn.addActionListener(e -> {
                 try {
                     URL url = new URL(instaman.getProfilePic(gui.ppUserName.getText()));
                     BufferedImage image = ImageIO.read(url);
@@ -117,7 +167,7 @@ public class GUI {
 
         });
 
-        gui.downloadButton.addActionListener(e->{
+        gui.downloadButton.addActionListener(e -> {
                 try {
                     //TODO: Downloader
                     URL url = new URL(instaman.getProfilePic(gui.ppUserName.getText()));
@@ -129,7 +179,7 @@ public class GUI {
                 }
         });
 
-        gui.aboutButton.addActionListener(e->{
+        gui.aboutButton.addActionListener(e -> {
                 JOptionPane.showMessageDialog(null, "2017, Ozan Karaali. \n" +
                         "https://github.com/ozankaraali\n" +
                         "Uses Bruno Volpato's Instagram4J library. \n" +
