@@ -18,6 +18,7 @@ import java.util.List;
 public class Instaman {
     private String username;
     private String password;
+    private String sneakUsername;
     private Instagram4j instagram;
     private InstagramSearchUsernameResult userResult;
     private InstagramUser userasd;
@@ -33,6 +34,9 @@ public class Instaman {
     public void setUsername(String username) {
         this.username = username;
     }
+    public void setSneakUsername(String sneakUsername) {
+        this.sneakUsername = sneakUsername;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -41,16 +45,19 @@ public class Instaman {
     public void builder(){
         instagram = Instagram4j.builder().username(username).password(password).build();
         instagram.setup();
+        if(sneakUsername.equals("")){
+            sneakUsername = username;
+        }
         try {
             instagram.login();
-            userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
+            userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(sneakUsername));
             userasd = userResult.getUser();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public ArrayList getFollowersList(){
+    public ArrayList getFollowersList() throws NullPointerException{
         InstagramGetUserFollowersResult fr = followersRequest();
         users = new ArrayList<>();
         String nextMaxId = fr.getNext_max_id() ;
@@ -75,7 +82,7 @@ public class Instaman {
         return followersList;
     }
 
-    public ArrayList getFollowingList(){
+    public ArrayList getFollowingList() throws NullPointerException{
         InstagramGetUserFollowersResult fr = followingRequest();
         usera = new ArrayList<>();
         String nextMaxId = fr.getNext_max_id() ;
@@ -126,14 +133,14 @@ public class Instaman {
     }
 
     public int getFollowersNum(){try{
-        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
+        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(sneakUsername));
         userasd = userResult.getUser();}catch (Exception e){}
         return userasd.follower_count;
         //return followersList.size();
     }
 
     public int getFollowingNum(){try {
-        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
+        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(sneakUsername));
         userasd = userResult.getUser();}catch (Exception e){}
         return userasd.following_count;
         //return followingList.size();
@@ -151,7 +158,7 @@ public class Instaman {
         return userasd.hd_profile_pic_url_info.url;
     }
 
-    public InstagramGetUserFollowersResult followingRequest(){
+    public InstagramGetUserFollowersResult followingRequest() throws NullPointerException{
         try {
             return instagram.sendRequest(new InstagramGetUserFollowingRequest(userResult.getUser().getPk()));
         } catch (IOException e) {
@@ -159,7 +166,7 @@ public class Instaman {
         }
         return null;
     }
-    public InstagramGetUserFollowersResult followingRequest(String nextMaxId){
+    public InstagramGetUserFollowersResult followingRequest(String nextMaxId) throws NullPointerException{
         try {
             return instagram.sendRequest(new InstagramGetUserFollowingRequest(userResult.getUser().getPk(), nextMaxId));
         } catch (IOException e) {
@@ -168,7 +175,7 @@ public class Instaman {
         return null;
     }
 
-    public InstagramGetUserFollowersResult followersRequest(){
+    public InstagramGetUserFollowersResult followersRequest() throws NullPointerException{
         try {
             return instagram.sendRequest(new InstagramGetUserFollowersRequest(userResult.getUser().getPk()));
         } catch (IOException e) {
@@ -176,7 +183,7 @@ public class Instaman {
         }
         return null;
     }
-    public InstagramGetUserFollowersResult followersRequest(String nextMaxId){
+    public InstagramGetUserFollowersResult followersRequest(String nextMaxId) throws NullPointerException{
         try {
             return instagram.sendRequest(new InstagramGetUserFollowersRequest(userResult.getUser().getPk(), nextMaxId));
         } catch (IOException e) {
