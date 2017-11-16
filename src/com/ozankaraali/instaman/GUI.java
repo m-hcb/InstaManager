@@ -68,16 +68,16 @@ public class GUI {
                 e1.printStackTrace();
             }
             try{
-                if(!instaman.isLoggedin()){
+                //if((!instaman.isLoggedin())||(instaman.isLoggedin()==null)){
                     instaman.setPassword(new String(gui.password.getPassword()));
                     instaman.setUsername(gui.username.getText());
                     instaman.setSneakUsername(gui.sneakPeek.getText());
                     instaman.builder();
-                }
-                else{
+                //}
+                /*else{
                     instaman.setSneakUsername(gui.sneakPeek.getText());
                     instaman.refreshResult();
-                }
+                }*/
 
 
                 DefaultListModel<String> followersModel = new DefaultListModel<>();
