@@ -62,8 +62,9 @@ public class Instaman {
                 break;
             }
             else{
-                users.addAll(fr.getUsers());
+                //users.addAll(fr.getUsers());
                 nextMaxId = fr.getNext_max_id();
+                //fr = followersRequest(nextMaxId);
             }
         }
 
@@ -85,8 +86,9 @@ public class Instaman {
                 break;
             }
             else{
-                usera.addAll(fr.getUsers());
+                //usera.addAll(fr.getUsers());
                 nextMaxId = fr.getNext_max_id();
+                //fr = followingRequest(nextMaxId);
             }
         }
 
