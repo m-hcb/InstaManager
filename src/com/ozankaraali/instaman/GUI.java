@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class GUI {
     private JTextField username;
@@ -38,6 +39,11 @@ public class GUI {
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Instagram Manager");
         GUI gui = new GUI();
+
+        try{
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
+        catch (Exception e){}
+
         Instaman instaman = new Instaman();
 
         gui.sneakCheck.addItemListener(l -> {
@@ -63,7 +69,7 @@ public class GUI {
             gui.statusText.setText("Logging in and loading, please wait...");
 
             try {
-                Thread.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(1000);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
             }
