@@ -1,12 +1,9 @@
 package com.ozankaraali.instaman;
 
-import org.bytedeco.javacpp.RealSense;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -209,6 +206,7 @@ public class GUI {
         gui.ppQueryBtn.addActionListener(e -> {
                 try {
                     URL url = new URL(instaman.getProfilePic(gui.ppUserName.getText()));
+
                     BufferedImage image = ImageIO.read(url);
                     Image dimg = image.getScaledInstance(500, 500,
                             Image.SCALE_SMOOTH);

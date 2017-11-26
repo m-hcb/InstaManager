@@ -11,7 +11,6 @@ import org.brunocvcunha.instagram4j.requests.payload.InstagramUser;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramUserSummary;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,6 +166,8 @@ public class Instaman {
     }
 
     public String getProfilePic(String username){
+        java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
+        java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://instagram.com/"+username)
