@@ -1,11 +1,19 @@
 package com.ozankaraali.instaman;
 
+import org.bytedeco.javacpp.RealSense;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.concurrent.TimeUnit;
 
 public class GUI {
@@ -60,10 +68,49 @@ public class GUI {
                 gui.sneakPeek.setText("");
                       gui.unfBtn.setText("Unfollow");
                      gui.fansBtn.setText("Follow");
-                gui.followingBtn.setText("Unollow");
+                gui.followingBtn.setText("Unfollow");
                 gui.followersBtn.setText("Follow");
             }
         });
+        gui.loginButton.setEnabled(false);
+
+
+        gui.username.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(gui.password.getDocument().getLength()!=0)
+                gui.loginButton.setEnabled(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(e.getDocument().getLength()==0){gui.loginButton.setEnabled(false);}
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        }
+        );
+        gui.password.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e){
+                if(gui.username.getDocument().getLength()!=0)
+                gui.loginButton.setEnabled(true);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(e.getDocument().getLength()==0){gui.loginButton.setEnabled(false);}
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        }
+        );
 
         gui.loginButton.addActionListener(e -> {
             gui.statusText.setText("Logging in and loading, please wait...");
@@ -174,12 +221,18 @@ public class GUI {
         });
 
         gui.downloadButton.addActionListener(e -> {
+            gui.ppQueryBtn.doClick();
                 try {
-                    //TODO: Downloader
-                    URL url = new URL(instaman.getProfilePic(gui.ppUserName.getText()));
-                    BufferedImage image = ImageIO.read(url);
-                    JFileChooser savefile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                    //savefile.showSaveDialog(image);
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.setCurrentDirectory(new java.io.File("."));
+                    chooser.setDialogTitle("SAVE");
+                    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    chooser.setAcceptAllFileFilterUsed(false);
+                    chooser.showSaveDialog(null);
+                    try (InputStream in = new URL(instaman.getProfilePic(gui.ppUserName.getText())).openStream()) {
+                        Files.copy(in, Paths.get(chooser.getCurrentDirectory() +"/"+ gui.ppUserName.getText() + ".jpg"), StandardCopyOption.REPLACE_EXISTING);
+                    }
+
                 } catch (Exception xc) {
                     xc.printStackTrace();
                 }
@@ -195,7 +248,7 @@ public class GUI {
         frame.setContentPane(gui.mainField);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(580, 720);
+        frame.setSize(600, 800);
         frame.setVisible(true);
         frame.getRootPane().setDefaultButton(gui.loginButton);
 

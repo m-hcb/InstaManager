@@ -1,5 +1,8 @@
 package com.ozankaraali.instaman;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.brunocvcunha.instagram4j.Instagram4j;
 import org.brunocvcunha.instagram4j.requests.*;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramGetUserFollowersResult;
@@ -163,10 +166,27 @@ public class Instaman {
         instagram.sendRequest(new InstagramFollowRequest(userasd.getPk()));}catch (Exception e){}
     }
 
-    public String getProfilePic(String username){try{
-        userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
-        userasd = userResult.getUser();}catch (Exception e){}
-        return userasd.hd_profile_pic_url_info.url;
+    public String getProfilePic(String username){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://instagram.com/"+username)
+                .build();
+        Response response = null;
+        String out="";
+        try {
+            response = client.newCall(request).execute();
+            String mahmut = response.body().string();
+            int b = mahmut.indexOf("og:image");
+            int c = mahmut.indexOf("og:title");
+            String url = mahmut.subSequence(b+19,c-33).toString();
+            int s = url.indexOf("s150x150");
+            out = url.subSequence(0,s).toString()+url.subSequence(s+9,url.length()).toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return out;
     }
 
     public InstagramGetUserFollowersResult followingRequest() throws NullPointerException{
