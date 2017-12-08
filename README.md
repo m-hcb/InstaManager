@@ -2,7 +2,7 @@
 This program shows instagram followers and followings in lists to manage it and displays profile pictures.
 
 ## Terms of Service
-Do not use this software for marketing purposes, send spam or commit crimes.
+Do not use this software for any illegal purpose.
 
 ## Downloads
 Always check your binary for malwares and check the source codes.
