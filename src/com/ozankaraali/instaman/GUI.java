@@ -40,13 +40,21 @@ public class GUI {
     private JCheckBox sneakCheck;
     private JPanel statusBar;
     private JLabel statusText;
+    private JPanel proxySettings;
+    private JCheckBox proxyEnabledCheckBox;
+    private JTextField ipAddress;
+    private JTextField proxyUsername;
+    private JPasswordField proxyPassword;
+    private JTextField port;
 
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Instagram Manager");
         GUI gui = new GUI();
 
         try{
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "InstaManager");
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
         catch (Exception e){}
 
         Instaman instaman = new Instaman();
@@ -119,6 +127,14 @@ public class GUI {
             }
             try{
                 //if((!instaman.isLoggedin())||(instaman.isLoggedin()==null)){
+                    if(gui.proxyEnabledCheckBox.isSelected()){
+                        instaman.setProxyEnabled(true);
+                        instaman.setServerIp(gui.ipAddress.getText());
+                        instaman.setPortNumber(Integer.parseInt(gui.port.getText()));
+                        instaman.setNetUser(gui.proxyUsername.getText());
+                        instaman.setNetPass(gui.proxyPassword.getPassword().toString());
+                    }
+
                     instaman.setPassword(new String(gui.password.getPassword()));
                     instaman.setUsername(gui.username.getText());
                     instaman.setSneakUsername(gui.sneakPeek.getText());

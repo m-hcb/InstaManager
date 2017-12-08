@@ -3,6 +3,10 @@ package com.ozankaraali.instaman;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.brunocvcunha.instagram4j.Instagram4j;
 import org.brunocvcunha.instagram4j.requests.*;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramGetUserFollowersResult;
@@ -26,6 +30,53 @@ public class Instaman {
     private ArrayList followersList;
     private ArrayList followingList;
 
+    private boolean proxyEnabled = false;
+
+    public boolean isProxyEnabled() {
+        return proxyEnabled;
+    }
+
+    public void setProxyEnabled(boolean proxyEnabled) {
+        this.proxyEnabled = proxyEnabled;
+    }
+
+    public String getServerIp() {
+        return serverIp;
+    }
+
+    public void setServerIp(String serverIp) {
+        this.serverIp = serverIp;
+    }
+
+    public int getPortNumber() {
+        return portNumber;
+    }
+
+    public void setPortNumber(int portNumber) {
+        this.portNumber = portNumber;
+    }
+
+    public String getNetUser() {
+        return netUser;
+    }
+
+    public void setNetUser(String netUser) {
+        this.netUser = netUser;
+    }
+
+    public String getNetPass() {
+        return netPass;
+    }
+
+    public void setNetPass(String netPass) {
+        this.netPass = netPass;
+    }
+
+    private String serverIp;
+    private int portNumber;
+    private String netUser;
+    private String netPass;
+
     public Instaman(){
 
     }
@@ -47,6 +98,17 @@ public class Instaman {
         if(sneakUsername.equals("")){
             sneakUsername = username;
         }
+
+        if (proxyEnabled){
+        HttpHost proxy = new HttpHost(serverIp, portNumber, "http");
+        instagram.getClient().getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+        instagram.getClient().getParams().setIntParameter("http.connection.timeout", 600000);
+
+        instagram.getClient().getCredentialsProvider().setCredentials(
+                new AuthScope(serverIp, portNumber),
+                new UsernamePasswordCredentials(netUser, netPass));
+        }
+
         try {
             instagram.login();
             refreshResult();
