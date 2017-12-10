@@ -92,7 +92,7 @@ public class Instaman {
         this.password = password;
     }
 
-    public void builder(){
+    public void builder(String twoFact){
         instagram = Instagram4j.builder().username(username).password(password).build();
         instagram.setup();
         if(sneakUsername.equals("")){
@@ -110,7 +110,9 @@ public class Instaman {
         }
 
         try {
-            instagram.login();
+            if(!twoFact.equals(""))
+                instagram.login(twoFact);
+            else{instagram.login();}
             refreshResult();
         } catch (IOException e) {
             e.printStackTrace();

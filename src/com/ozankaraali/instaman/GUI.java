@@ -46,6 +46,7 @@ public class GUI {
     private JTextField proxyUsername;
     private JPasswordField proxyPassword;
     private JTextField port;
+    private JTextField twoFactKey;
 
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Instagram Manager");
@@ -138,7 +139,11 @@ public class GUI {
                     instaman.setPassword(new String(gui.password.getPassword()));
                     instaman.setUsername(gui.username.getText());
                     instaman.setSneakUsername(gui.sneakPeek.getText());
-                    instaman.builder();
+                    if(gui.twoFactKey.getText().equals(null)){
+                        instaman.builder(null);}
+                    else{
+                        instaman.builder(gui.twoFactKey.getText());
+                    }
                 //}
                 /*else{
                     instaman.setSneakUsername(gui.sneakPeek.getText());
