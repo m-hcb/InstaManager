@@ -230,6 +230,14 @@ public class Instaman {
     }
 
     public String getProfilePic(String username){
+        try{
+            userResult = instagram.sendRequest(new InstagramSearchUsernameRequest(username));
+            userasd = userResult.getUser();
+        }
+        catch (Exception e){}
+        return userasd.hd_profile_pic_url_info.url;
+
+        /* OBSOLETE METHOD SINCE INSTAGRAM CHANGED THE WAY OF URLS
         java.lang.System.setProperty("java.net.preferIPv4Stack", "true");
         java.lang.System.setProperty("java.net.preferIPv6Addresses", "false");
         OkHttpClient client = new OkHttpClient();
@@ -251,7 +259,7 @@ public class Instaman {
             e.printStackTrace();
         }
 
-        return out;
+        return out;*/
     }
 
     public InstagramGetUserFollowersResult followingRequest() throws NullPointerException{

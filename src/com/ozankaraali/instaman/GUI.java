@@ -79,6 +79,8 @@ public class GUI {
             }
         });
         gui.loginButton.setEnabled(false);
+        //gui.ppQueryBtn.setEnabled(false);
+        //gui.downloadButton.setEnabled(false);
 
 
         gui.username.getDocument().addDocumentListener(new DocumentListener() {
@@ -225,6 +227,7 @@ public class GUI {
         });
 
         gui.ppQueryBtn.addActionListener(e -> {
+            //if(gui.statusText.getText().equals("Status: OK!"))gui.ppQueryBtn.setEnabled(true);
                 try {
                     URL url = new URL(instaman.getProfilePic(gui.ppUserName.getText()));
 
@@ -240,6 +243,7 @@ public class GUI {
         });
 
         gui.downloadButton.addActionListener(e -> {
+            //if(gui.ppQueryBtn.isEnabled())gui.downloadButton.setEnabled(true);
             gui.ppQueryBtn.doClick();
                 try {
                     JFileChooser chooser = new JFileChooser();
